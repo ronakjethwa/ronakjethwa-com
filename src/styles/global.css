@@ -729,10 +729,12 @@ a.postmark:hover {
 ───────────────────────────────────────────────────────────── */
 
 #now-playing {
-  display: none;
   position: fixed;
   bottom: 1.75rem;
   right: 1.75rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
   background: var(--bg);
   border: 1px solid var(--stone);
   border-radius: 0.625rem;
@@ -742,13 +744,18 @@ a.postmark:hover {
     0 4px 16px rgba(43, 42, 40, 0.08);
   max-width: 14rem;
   z-index: 100;
-  gap: 0.75rem;
-  align-items: center;
-  animation: np-fade-in 0.4s ease forwards;
+  /* Hidden by default; soft fade in AND out via opacity/visibility. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
 }
 
 #now-playing.visible {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 #now-playing img {
@@ -807,15 +814,12 @@ a.postmark:hover {
 .np-bars span:nth-child(2) { height: 9px;  animation-delay: 0.2s;  }
 .np-bars span:nth-child(3) { height: 6px;  animation-delay: 0.4s;  }
 
+
 @keyframes np-bar {
   0%, 100% { transform: scaleY(0.3); opacity: 0.6; }
   50%       { transform: scaleY(1);  opacity: 1;   }
 }
 
-@keyframes np-fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0);   }
-}
 
 /* ─────────────────────────────────────────────────────────────
    RESPONSIVE

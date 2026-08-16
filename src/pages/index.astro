@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { SPOTIFY_WIDGET_ENABLED, SPOTIFY_POLL_MS } from '../config';
 ---
 
 <Layout title="Ronak Jethwa">
@@ -31,4 +32,16 @@ import Layout from '../layouts/Layout.astro';
     </nav>
 
   </main>
+
+  {SPOTIFY_WIDGET_ENABLED && (
+    <div id="now-playing" aria-hidden="true" data-poll={SPOTIFY_POLL_MS}>
+      <img id="np-art" src="" alt="" width="40" height="40">
+      <div class="np-text">
+        <span class="np-track" id="np-track"></span>
+        <span class="np-artist" id="np-artist"></span>
+        <div class="np-bars" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+      <script is:inline src="/now-playing.js" defer></script>
+    </div>
+  )}
 </Layout>
