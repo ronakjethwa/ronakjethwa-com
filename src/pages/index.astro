@@ -31,47 +31,4 @@ import Layout from '../layouts/Layout.astro';
     </nav>
 
   </main>
-
-  <div id="now-playing" aria-hidden="true">
-    <img id="np-art" src="" alt="" width="38" height="38">
-    <div class="np-text">
-      <span class="np-track" id="np-track"></span>
-      <span class="np-artist" id="np-artist"></span>
-      <div class="np-bars" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    (function () {
-      const widget = document.getElementById('now-playing')!;
-      const art    = document.getElementById('np-art') as HTMLImageElement;
-      const track  = document.getElementById('np-track')!;
-      const artist = document.getElementById('np-artist')!;
-
-      function poll() {
-        fetch('/api/now-playing')
-          .then(r => r.ok ? r.json() : null)
-          .then(data => {
-            if (data?.isPlaying) {
-              art.src         = data.albumArt ?? '';
-              track.textContent  = data.track  ?? '';
-              artist.textContent = data.artist ?? '';
-              widget.classList.add('visible');
-              widget.removeAttribute('aria-hidden');
-            } else {
-              widget.classList.remove('visible');
-              widget.setAttribute('aria-hidden', 'true');
-            }
-          })
-          .catch(() => {
-            widget.classList.remove('visible');
-          });
-      }
-
-      poll();
-      setInterval(poll, 45_000);
-    })();
-  </script>
 </Layout>
