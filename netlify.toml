@@ -1,0 +1,8 @@
+# Netlify build settings for the static Astro site.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Match the local toolchain (package.json engines: node >=22.12.0).
+  NODE_VERSION = "22"
