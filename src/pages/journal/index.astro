@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EntryList from '../../components/EntryList.astro';
+import { getJournalItems } from '../../utils/journal';
+import { JOURNAL_PAGE_SIZE as PAGE_SIZE } from '../../config';
+
+const all = await getJournalItems();
+const items = all.slice(0, PAGE_SIZE);
+const totalPages = Math.ceil(all.length / PAGE_SIZE);
+---
+
+<Layout
+  title="Journal — Ronak Jethwa"
+  description="Whatever's running through my head, dumped before I lose it."
+>
+  <main>
+    <a class="back" href="/">← Ronak Jethwa</a>
+
+    <header class="page-head">
+      <span class="page-kicker">Journal</span>
+      <p class="page-lede">
+        Whatever's running through my head, dumped before I lose
+        it. <em>Unfiltered</em>, unresolved, allowed to change shape.
+      </p>
+    </header>
+
+    {items.length === 0 ? (
+      <p class="journal-empty">Nothing here yet.</p>
+    ) : (
+      <EntryList items={items} />
+    )}
+
+    {totalPages > 1 && (
+      <nav class="pager" aria-label="Journal pages">
+        <span class="pager-spacer"></span>
+        <a class="pager-link" href="/journal/page/2">Older →</a>
+      </nav>
+    )}
+  </main>
+</Layout>

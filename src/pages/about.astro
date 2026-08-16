@@ -1,0 +1,111 @@
+---
+import { execSync } from 'node:child_process';
+import { statSync } from 'node:fs';
+import Layout from '../layouts/Layout.astro';
+import now from '../data/now.json';
+import books from '../data/books.json';
+
+// Auto-date the "Now" block from when its content was last touched.
+// Prefer git (honest on deploy); fall back to file mtime (works locally).
+const NOW_FILE = 'src/data/now.json';
+let nowUpdated: Date | null = null;
+try {
+  const iso = execSync(`git log -1 --format=%cI -- ${NOW_FILE}`, {
+    encoding: 'utf8',
+    stdio: ['pipe', 'pipe', 'ignore'],
+  }).trim();
+  if (iso) nowUpdated = new Date(iso);
+} catch { /* no git — fall through */ }
+if (!nowUpdated) {
+  try { nowUpdated = statSync(NOW_FILE).mtime; } catch { /* leave null */ }
+}
+
+const nowLabel = nowUpdated
+  ? nowUpdated.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+  : null;
+
+---
+
+<Layout
+  title="About — Ronak Jethwa"
+  description="About Ronak Jethwa — how I got here, and what I pay attention to when I'm not building."
+>
+  <main>
+    <a class="back" href="/">← Ronak Jethwa</a>
+
+    <header class="page-head">
+      <span class="page-kicker">About</span>
+      <p class="page-lede">
+        Curious to a fault, restless by default. I'd rather be a little lost
+        and <em>learning</em> than comfortable and bored.
+      </p>
+    </header>
+
+    <div class="about-body">
+      <p>
+        I grew up in Gujarat and studied computer science on two continents — India
+        first, then California. Somewhere in a quarter-life crisis, I decided the web was
+        where I wanted to spend my attention, and I've followed that instinct across a
+        string of cities ever since: Southern California, Boston, Seattle, and now San
+        Francisco.
+      </p>
+      <p>
+        Each move taught me something the last place couldn't. I collect those more than
+        I collect things — new streets to get lost in, new problems to take apart, people
+        who see the world from an angle I hadn't thought to stand at.
+      </p>
+    </div>
+
+    <div class="about-contact">
+      <p>If any of this makes you want to say hello, please do.</p>
+      <a class="about-contact-email" href="mailto:ronakjethwa@gmail.com">ronakjethwa@gmail.com</a>
+    </div>
+
+    <div class="facets">
+      <div class="facet">
+        <span class="section-label">Photography</span>
+        <p>
+          I photograph places more than people — architecture, light, the odd geometry
+          of a street at the wrong time of day. Some of it lives at <a
+          href="https://ronakjethwa.photos/" target="_blank" rel="noopener">ronakjethwa.photos</a>, usually
+          with a sentence about what I was looking at.
+        </p>
+      </div>
+
+      <div class="facet">
+        <span class="section-label">Listening</span>
+        <p>
+          I curate soul playlists with more care than they probably deserve. Something
+          about that era's warmth keeps pulling me back.
+        </p>
+      </div>
+
+      <div class="facet">
+        <span class="section-label">Reading</span>
+        <ul class="book-list">
+          {books.map((book) => (
+            <li>
+              <span class="book-title">{book.title}</span>
+              <span class="book-note">{book.note}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="now-block">
+      <span class="now-stamp">
+        Now{nowLabel && <span class="now-updated"> · updated {nowLabel}</span>}
+      </span>
+      <dl class="now-list">
+        {now.items.map((item) => (
+          <div>
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+  </main>
+</Layout>

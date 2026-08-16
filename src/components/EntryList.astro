@@ -1,0 +1,28 @@
+---
+import { postmark } from '../utils/date';
+import type { JournalItem } from '../utils/journal';
+
+interface Props {
+  items: JournalItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="entries">
+  {items.map((item) => (
+    <article class="entry">
+      <a class="postmark" href={`/journal/${item.slug}`}>{postmark(item.date)}</a>
+
+      {item.type === 'post' ? (
+        <div class="entry-preview">
+          <h2 class="entry-title"><a href={`/journal/${item.slug}`}>{item.title ?? item.slug}</a></h2>
+          {item.dek && <p class="entry-dek">{item.dek}</p>}
+          <a class="entry-more" href={`/journal/${item.slug}`}>Read →</a>
+        </div>
+      ) : (
+        <div class="entry-text">{item.entry.body?.trim()}</div>
+      )}
+    </article>
+  ))}
+</div>

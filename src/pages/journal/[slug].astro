@@ -1,0 +1,38 @@
+---
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { postmark } from '../../utils/date';
+import { getJournalItems } from '../../utils/journal';
+
+export async function getStaticPaths() {
+  const items = await getJournalItems();
+  return items.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item.entry);
+
+const pageTitle = item.title
+  ? `${item.title} — Ronak Jethwa`
+  : 'Journal — Ronak Jethwa';
+---
+
+<Layout title={pageTitle} description={item.dek ?? "From Ronak's journal."}>
+  <main>
+    <a class="back" href="/journal">← Journal</a>
+
+    <article class="entry-full">
+      <span class="postmark postmark--static">{postmark(item.date)}</span>
+
+      {item.title && <h1 class="entry-title-full">{item.title}</h1>}
+      {item.dek && <p class="entry-dek-full">{item.dek}</p>}
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+</Layout>

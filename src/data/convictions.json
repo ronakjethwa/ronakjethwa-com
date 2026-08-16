@@ -1,0 +1,22 @@
+[
+  {
+    "statement": "Software is just the <em>medium</em>. What I build is products.",
+    "body": "I care less about the stack than about the thing it becomes — whether it feels inevitable in someone's hands. Code is how I get there, not the point of it."
+  },
+  {
+    "statement": "Nothing's real until someone <em>uses</em> it.",
+    "body": "Everything before that is a well-informed guess. I'd rather get a rough version into real hands than polish something no one's touched — the feedback is the work."
+  },
+  {
+    "statement": "Every architecture problem is really a <em>governance</em> problem.",
+    "body": "Past a certain scale, the hard question stops being how to build something and becomes who's allowed to change it. The code is rarely the bottleneck. People are."
+  },
+  {
+    "statement": "Speed is a series of <em>quiet decisions</em> about what you'll give up.",
+    "body": "Every millisecond saved is a trade — some control, some flexibility, handed over without much ceremony. The craft is knowing which trades are worth it."
+  },
+  {
+    "statement": "The work I'm proudest of is other people's <em>growth</em>.",
+    "body": "I've spent years helping engineers find what they're good at and then daring them to want more. Watching someone become the thing they doubted they could be still beats anything I've shipped alone."
+  }
+]

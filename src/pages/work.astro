@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import convictions from '../data/convictions.json';
+
+// The Work page as convictions — what a decade of building taught me, not a list
+// of what I shipped. Edit the copy in src/data/convictions.json.
+---
+
+<Layout
+  title="Work — Ronak Jethwa"
+  description="Not a list of projects — a decade of building, and what it taught me."
+>
+  <main>
+    <a class="back" href="/">← Ronak Jethwa</a>
+
+    <header class="page-head">
+      <span class="page-kicker">Work</span>
+      <p class="page-lede">
+        You can learn most of who I am from the way I <em>build</em>.
+      </p>
+    </header>
+
+    <div class="convictions">
+      {convictions.map((c) => (
+        <section class="conviction">
+          <p class="conviction-statement" set:html={c.statement} />
+          <p class="conviction-body">{c.body}</p>
+        </section>
+      ))}
+    </div>
+
+    <p class="resume-footnote">
+      If you want the companies, titles, and numbers, that's what the <a
+      href="https://drive.google.com/file/d/1jHmd9KqrzZSVKey4oZYPcCaX9X8vWUXj/view?usp=drive_link" target="_blank" rel="noopener">résumé</a> is for.
+    </p>
+  </main>
+</Layout>

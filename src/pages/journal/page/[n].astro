@@ -1,0 +1,49 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import EntryList from '../../../components/EntryList.astro';
+import { getJournalItems } from '../../../utils/journal';
+import { JOURNAL_PAGE_SIZE as PAGE_SIZE } from '../../../config';
+
+export async function getStaticPaths() {
+  const all = await getJournalItems();
+  const totalPages = Math.ceil(all.length / PAGE_SIZE);
+  const paths = [];
+
+  // Page 1 lives at /journal; generate 2..N here.
+  for (let n = 2; n <= totalPages; n++) {
+    paths.push({
+      params: { n: String(n) },
+      props: {
+        items: all.slice((n - 1) * PAGE_SIZE, n * PAGE_SIZE),
+        n,
+        totalPages,
+      },
+    });
+  }
+
+  return paths;
+}
+
+const { items, n, totalPages } = Astro.props;
+const newerHref = n === 2 ? '/journal' : `/journal/page/${n - 1}`;
+---
+
+<Layout
+  title={`Journal · page ${n} — Ronak Jethwa`}
+  description="Whatever's running through my head, dumped before I lose it."
+>
+  <main>
+    <a class="back" href="/journal">← Journal</a>
+
+    <header class="page-head">
+      <span class="page-kicker">Journal · page {n} / {totalPages}</span>
+    </header>
+
+    <EntryList items={items} />
+
+    <nav class="pager" aria-label="Journal pages">
+      <a class="pager-link" href={newerHref}>← Newer</a>
+      {n < totalPages && <a class="pager-link" href={`/journal/page/${n + 1}`}>Older →</a>}
+    </nav>
+  </main>
+</Layout>
