@@ -1,1 +1,23 @@
-{"hooks": {"PostToolUse": [{"matcher": "Edit|Write", "hooks": [{"type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/astro-check.sh", "asyncRewake": true, "statusMessage": "astro check"}]}]}}
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/astro-check.sh",
+            "asyncRewake": true,
+            "statusMessage": "astro check"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npx astro build)"
+    ]
+  }
+}
